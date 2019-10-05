@@ -13,6 +13,7 @@ sslify = SSLify(app)
 TOKEN = ''
 URL = 'https://api.telegram.org/bot{}/'.format(TOKEN)
 
+
 def write_json(data, filename='answer.json'):
     with open(filename, 'w') as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
@@ -24,16 +25,19 @@ def send_message(chat_id, text='default text'):
     r = requests.post(url, json=answer)
     return r.json()
 
+
 def parse_text(text):
     pattern = r'/\w+'
     currency = re.search(pattern, text)
     return currency.group()[1:] if currency else None
+
 
 def get_price(currency):
     url = 'https://belarusbank.by/api/kursExchange?city=Минск'
     r = requests.get(url).json()
     price = r[0]['{}_in'.format(currency.upper())]
     return price
+
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
@@ -87,6 +91,7 @@ def index():
         # return jsonify(r)
 
     return '<h1>Bot welcomes You!</h1>'
+
 
 if __name__ == '__main__':
     app.run()
